@@ -1,0 +1,23 @@
+{
+  "name": "clean-zenircbot",
+  "version": "0.0.0",
+  "description": "Clean implementation of zenircbot from scratch.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap ./test/"
+  },
+  "keywords": [
+    "zenircbot",
+    "irc",
+    "bot"
+  ],
+  "author": "Wraithan <wraithan.net> (xwraithanx@gmail.com)",
+  "license": "MIT",
+  "dependencies": {
+    "bunyan": "^0.22.3",
+    "dashdash": "^1.5.0"
+  },
+  "devDependencies": {
+    "tap": "^0.4.9"
+  }
+}
