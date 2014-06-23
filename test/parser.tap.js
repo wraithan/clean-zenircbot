@@ -4,7 +4,7 @@ var Parser = require('../lib/parser')
 var stream = require('stream')
 
 test('Parser tests', {timeout: 10}, function (t) {
-  t.test('connected', function (t) {
+  t.test('connected', {timeout: 10}, function (t) {
     var parser = new Parser()
     var connectString = ':kornbluth.freenode.net 001 CleanZenBot :Welcome to the freenode Internet Relay Chat Network CleanZenBot'
     var source = createSource([
@@ -24,7 +24,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('join', function (t) {
+  t.test('join', {timeout: 10}, function (t) {
     var parser = new Parser()
     var joinString = ':CleanZenBot!~ZenIRCBot@c-76-115-44-205.hsd1.or.comcast.net JOIN #thebotterybarn'
     var source = createSource([joinString])
@@ -47,7 +47,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('topic', function (t) {
+  t.test('topic', {timeout: 10}, function (t) {
     var parser = new Parser()
     var topicString = ':wilhelm.freenode.net 332 CleanZenBot #pdxbots :Portland IRC (and other) Bot channel, feel free to botspam | http://docs.zenircbot.net/'
     var source = createSource([topicString])
