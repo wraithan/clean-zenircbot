@@ -1,9 +1,9 @@
-require('../lib/logger').init({level: 'fatal'})
 var test = require('tap').test
 var Parser = require('../lib/parser')
 var stream = require('stream')
 
 test('Parser tests', {timeout: 10}, function (t) {
+
   t.test('connected', {timeout: 10}, function (t) {
     var parser = new Parser()
     var connectString = ':kornbluth.freenode.net 001 CleanZenBot :Welcome to the freenode Internet Relay Chat Network CleanZenBot'
