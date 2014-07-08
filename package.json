@@ -19,5 +19,16 @@
   },
   "devDependencies": {
     "tap": "^0.4.9"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wraithan/clean-zenircbot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wraithan/clean-zenircbot/issues"
+  },
+  "homepage": "https://github.com/wraithan/clean-zenircbot"
 }
