@@ -73,7 +73,7 @@ test('Parser tests', {timeout: 10}, function (t) {
 
   t.test('privmsg', {timeout: 10}, function (t) {
     var parser = new Parser()
-    var privmsgString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PRIVMSG #pdxbots :ZenIRCBot is the most rad bot.'
+    var privmsgString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PRIVMSG #pdxbots :ZenIRCBot :the most rad bot.'
     var source = createSource([privmsgString])
     var listener = createListener(function (obj, encoding, done) {
       t.equal(obj.command, 'privmsg', 'translated command')
@@ -82,9 +82,9 @@ test('Parser tests', {timeout: 10}, function (t) {
         prefix: 'CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net',
         command: 'PRIVMSG',
         nick: 'CleanZenBot',
-        message: 'ZenIRCBot is the most rad bot.',
+        message: 'ZenIRCBot :the most rad bot.',
         to: '#pdxbots',
-        args: ['#pdxbots', 'ZenIRCBot is the most rad bot.'],
+        args: ['#pdxbots', 'ZenIRCBot :the most rad bot.'],
         splitPrefix: {
           nick: 'CleanZenBot',
           user: '~ZenIRCBot',
@@ -152,8 +152,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('part', {timeout: 10}, function (t) {
-    // Test comma separated lists of channels
+  t.test('part single', {timeout: 10}, function (t) {
     var parser = new Parser()
     var partString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PART #pdxbots :Leaving...'
     var source = createSource([partString])
@@ -163,9 +162,35 @@ test('Parser tests', {timeout: 10}, function (t) {
         raw: partString,
         prefix: 'CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net',
         command: 'PART',
-        channel: '#pdxbots',
+        channels: ['#pdxbots'],
         message: 'Leaving...',
         args: ['#pdxbots', 'Leaving...'],
+        splitPrefix: {
+          nick: 'CleanZenBot',
+          user: '~ZenIRCBot',
+          host: 'c-00-000-00-000.hsd1.or.comcast.net'
+        }
+      }
+      t.deepEqual(obj.data, expectedData, 'parse out the data')
+      t.end()
+      done()
+    })
+    source.pipe(parser).pipe(listener)
+  })
+
+  t.test('part mutli', {timeout: 10}, function (t) {
+    var parser = new Parser()
+    var partString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PART #pdxbots,#pdxtech :Leaving...'
+    var source = createSource([partString])
+    var listener = createListener(function (obj, encoding, done) {
+      t.equal(obj.command, 'part', 'translated command')
+      var expectedData = {
+        raw: partString,
+        prefix: 'CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net',
+        command: 'PART',
+        channels: ['#pdxbots', '#pdxtech'],
+        message: 'Leaving...',
+        args: ['#pdxbots,#pdxtech', 'Leaving...'],
         splitPrefix: {
           nick: 'CleanZenBot',
           user: '~ZenIRCBot',
