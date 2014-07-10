@@ -72,19 +72,111 @@ test('Parser tests', {timeout: 10}, function (t) {
   })
 
   t.test('privmsg', {timeout: 10}, function (t) {
-    // NotImplemented
+    var parser = new Parser()
+    var privmsgString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PRIVMSG #pdxbots :ZenIRCBot is the most rad bot.'
+    var source = createSource([privmsgString])
+    var listener = createListener(function (obj, encoding, done) {
+      t.equal(obj.command, 'privmsg', 'translated command')
+      var expectedData = {
+        raw: privmsgString,
+        prefix: 'CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net',
+        command: 'PRIVMSG',
+        nick: 'CleanZenBot',
+        message: 'ZenIRCBot is the most rad bot.',
+        to: '#pdxbots',
+        args: ['#pdxbots', 'ZenIRCBot is the most rad bot.'],
+        splitPrefix: {
+          nick: 'CleanZenBot',
+          user: '~ZenIRCBot',
+          host: 'c-00-000-00-000.hsd1.or.comcast.net'
+        }
+      }
+      t.deepEqual(obj.data, expectedData, 'parse out the data')
+      t.end()
+      done()
+    })
+    source.pipe(parser).pipe(listener)
   })
 
-  t.test('ctcp', {timeout: 10}, function (t) {
-    // NotImplemented
+  t.test('ctcp action', {timeout: 10}, function (t) {
+    var parser = new Parser()
+    var ctcpString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PRIVMSG #pdxbots :\u0001ACTION did some stuff\u0001'
+    var source = createSource([ctcpString])
+    var listener = createListener(function (obj, encoding, done) {
+      t.equal(obj.command, 'ctcp', 'translated command')
+      var expectedData = {
+        raw: ctcpString,
+        prefix: 'CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net',
+        command: 'PRIVMSG',
+        type: 'action',
+        nick: 'CleanZenBot',
+        message: 'did some stuff',
+        to: '#pdxbots',
+        args: ['#pdxbots', '\u0001ACTION did some stuff\u0001'],
+        splitPrefix: {
+          nick: 'CleanZenBot',
+          user: '~ZenIRCBot',
+          host: 'c-00-000-00-000.hsd1.or.comcast.net'
+        }
+      }
+      t.deepEqual(obj.data, expectedData, 'parse out the data')
+      t.end()
+      done()
+    })
+    source.pipe(parser).pipe(listener)
   })
 
   t.test('nick', {timeout: 10}, function (t) {
-    // NotImplemented
+    var parser = new Parser()
+    var nickString = ':CleanZenBot1!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net NICK :CleanZenBot'
+    var source = createSource([nickString])
+    var listener = createListener(function (obj, encoding, done) {
+      t.equal(obj.command, 'nick', 'translated command')
+      var expectedData = {
+        raw: nickString,
+        prefix: 'CleanZenBot1!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net',
+        command: 'NICK',
+        oldNick: 'CleanZenBot1',
+        newNick: 'CleanZenBot',
+        args: ['CleanZenBot'],
+        splitPrefix: {
+          nick: 'CleanZenBot1',
+          user: '~ZenIRCBot',
+          host: 'c-00-000-00-000.hsd1.or.comcast.net'
+        }
+      }
+      t.deepEqual(obj.data, expectedData, 'parse out the data')
+      t.end()
+      done()
+    })
+    source.pipe(parser).pipe(listener)
   })
 
   t.test('part', {timeout: 10}, function (t) {
-    // NotImplemented
+    // Test comma separated lists of channels
+    var parser = new Parser()
+    var partString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PART #pdxbots :Leaving...'
+    var source = createSource([partString])
+    var listener = createListener(function (obj, encoding, done) {
+      t.equal(obj.command, 'part', 'translated command')
+      var expectedData = {
+        raw: partString,
+        prefix: 'CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net',
+        command: 'PART',
+        channel: '#pdxbots',
+        message: 'Leaving...',
+        args: ['#pdxbots', 'Leaving...'],
+        splitPrefix: {
+          nick: 'CleanZenBot',
+          user: '~ZenIRCBot',
+          host: 'c-00-000-00-000.hsd1.or.comcast.net'
+        }
+      }
+      t.deepEqual(obj.data, expectedData, 'parse out the data')
+      t.end()
+      done()
+    })
+    source.pipe(parser).pipe(listener)
   })
 
   t.test('quit', {timeout: 10}, function (t) {
@@ -198,6 +290,7 @@ function createSource (data) {
   source._read = function () {
     if(!sent) {
       source.push(data.join('\r\n') + '\r\n')
+      source.push(null)
       sent = true
     }
   }
