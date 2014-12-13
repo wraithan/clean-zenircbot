@@ -5,7 +5,6 @@
     "trailing": true,
     "curly": true,
     "eqeqeq": true,
-    "laxcomma": true,
     "undef": true,
     "quotmark": "single",
     "unused": true
