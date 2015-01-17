@@ -1,3 +1,5 @@
+'use strict'
+
 var test = require('tape').test
 var Parser = require('../lib/parser')
 var util = require('./util')

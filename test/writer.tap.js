@@ -1,3 +1,5 @@
+'use strict'
+
 var test = require('tape').test
 var Writer = require('../lib/writer')
 var util = require('./util')
