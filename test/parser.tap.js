@@ -1,10 +1,10 @@
-var test = require('tap').test
+var test = require('tape').test
 var Parser = require('../lib/parser')
 var util = require('./util')
 
-test('Parser tests', {timeout: 10}, function (t) {
+test('Parser tests', function (t) {
 
-  t.test('connected', {timeout: 100000}, function (t) {
+  t.test('connected', function (t) {
     var parser = new Parser()
     var connectString = ':kornbluth.freenode.net 001 CleanZenBot :Welcome to the freenode Internet Relay Chat Network CleanZenBot'
     var source = util.createStringSource([
@@ -24,7 +24,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('join', {timeout: 10000}, function (t) {
+  t.test('join', function (t) {
     var parser = new Parser()
     var joinString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net JOIN #thebotterybarn'
     var source = util.createStringSource([joinString])
@@ -49,7 +49,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('topic', {timeout: 10}, function (t) {
+  t.test('topic', function (t) {
     var parser = new Parser()
     var topicString = ':wilhelm.freenode.net 332 CleanZenBot #pdxbots :Portland IRC (and other) Bot channel, feel free to botspam | http://docs.zenircbot.net/'
     var source = util.createStringSource([topicString])
@@ -73,7 +73,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('privmsg', {timeout: 10}, function (t) {
+  t.test('privmsg', function (t) {
     var parser = new Parser()
     var privmsgString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PRIVMSG #pdxbots :ZenIRCBot :the most rad bot.'
     var source = util.createStringSource([privmsgString])
@@ -100,7 +100,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('ctcp action', {timeout: 10}, function (t) {
+  t.test('ctcp action', function (t) {
     var parser = new Parser()
     var ctcpString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PRIVMSG #pdxbots :\u0001ACTION did some stuff\u0001'
     var source = util.createStringSource([ctcpString])
@@ -128,7 +128,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('nick', {timeout: 10}, function (t) {
+  t.test('nick', function (t) {
     var parser = new Parser()
     var nickString = ':CleanZenBot1!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net NICK :CleanZenBot'
     var source = util.createStringSource([nickString])
@@ -154,7 +154,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('part single', {timeout: 10}, function (t) {
+  t.test('part single', function (t) {
     var parser = new Parser()
     var partString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PART #pdxbots :Leaving...'
     var source = util.createStringSource([partString])
@@ -180,7 +180,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('part mutli', {timeout: 10}, function (t) {
+  t.test('part mutli', function (t) {
     var parser = new Parser()
     var partString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net PART #pdxbots,#pdxtech :Leaving...'
     var source = util.createStringSource([partString])
@@ -206,7 +206,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('quit', {timeout: 10}, function (t) {
+  t.test('quit', function (t) {
     var parser = new Parser()
     var quitString = ':CleanZenBot!~ZenIRCBot@c-00-000-00-000.hsd1.or.comcast.net QUIT :Leaving...'
     var source = util.createStringSource([quitString])
@@ -231,7 +231,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('names', {timeout: 10}, function (t) {
+  t.test('names', function (t) {
     var parser = new Parser()
     var firstString = ':rajaniemi.freenode.net 353 CleanZenBot = #pdxbots :@Edyth Lilly Alaina Eneida'
     var secondString = ':rajaniemi.freenode.net 353 CleanZenBot = #pdxbots :Neely Nilda +Yuk Tisha Adam'
@@ -290,7 +290,7 @@ test('Parser tests', {timeout: 10}, function (t) {
     source.pipe(parser).pipe(listener)
   })
 
-  t.test('ping', {timeout: 10}, function (t) {
+  t.test('ping', function (t) {
     var parser = new Parser()
     var pingString = 'PING :holmes.freenode.net'
     var source = util.createStringSource([pingString])

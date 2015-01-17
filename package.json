@@ -4,7 +4,7 @@
   "description": "Clean implementation of zenircbot from scratch.",
   "main": "index.js",
   "scripts": {
-    "test": "tap ./test/"
+    "test": "node ./test/runner.js"
   },
   "keywords": [
     "zenircbot",
@@ -18,8 +18,8 @@
     "dashdash": "^1.5.0"
   },
   "devDependencies": {
-    "concat-stream": "^1.4.6",
-    "tap": "^0.4.9"
+    "colortape": "^0.1.1",
+    "tape": "^3.2.0"
   },
   "directories": {
     "test": "test"

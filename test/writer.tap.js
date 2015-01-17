@@ -1,9 +1,9 @@
-var test = require('tap').test
+var test = require('tape').test
 var Writer = require('../lib/writer')
 var util = require('./util')
 
-test('writer tests', {timeout: 10}, function (t) {
-  t.test('connect', {timeout: 10}, function (t) {
+test('writer tests', function (t) {
+  t.test('connect', function (t) {
     var writer = new Writer()
     var source = util.createObjectSource([{
       command: 'connect',
@@ -20,7 +20,7 @@ test('writer tests', {timeout: 10}, function (t) {
     source.pipe(writer).pipe(listener)
   })
 
-  t.test('raw', {timeout: 10}, function (t) {
+  t.test('raw', function (t) {
     var writer = new Writer()
     var source = util.createObjectSource([{
       command: 'raw',
